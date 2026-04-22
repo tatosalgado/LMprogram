@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VJM – Nueva Valencia</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;font-size:14px;color:#111;background:#fff}
+.app{max-width:680px;margin:0 auto}
+.hdr{padding:14px 18px 0;border-bottom:0.5px solid #e5e7eb}
+.hdr-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.accent-bar{width:4px;height:20px;background:#0d9488;border-radius:2px}
+.hdr-title{font-size:16px;font-weight:500;flex:1}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0}
+.sync-dot.ok{background:#22c55e}
+.sync-dot.err{background:#ef4444}
+.sync-dot.spin{background:#f59e0b;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.tabs{display:flex;gap:0;overflow-x:auto}
+.tab{padding:9px 13px;font-size:12px;cursor:pointer;border:none;background:transparent;color:#6b7280;border-bottom:2px solid transparent;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.tab.on{color:#0d9488;border-bottom-color:#0d9488;font-weight:500}
+.tab:hover:not(.on){color:#111;border-bottom-color:#d1d5db}
+.bdg{font-size:10px;padding:0 5px;border-radius:8px;background:#fef3c7;color:#92400e;font-weight:600;line-height:16px}
+.bdg.g{background:#dcfce7;color:#15803d}
+.body{padding:14px 18px}
+.card{border:0.5px solid #e5e7eb;border-radius:10px;padding:12px;margin-bottom:8px;background:#fff}
+.card.muted{background:#f9fafb}
+.card.ok{background:#f0fdf4;border-color:#86efac}
+.card.warn{background:#fefce8;border-color:#fde047}
+.card.err{background:#fef2f2;border-color:#fca5a5}
+input[type=text],select{width:100%;padding:6px 8px;border-radius:6px;border:0.5px solid #d1d5db;background:#fff;font-size:12px;color:#111;outline:none}
+input[type=text]:focus,select:focus{border-color:#0d9488;box-shadow:0 0 0 2px rgba(13,148,136,.2)}
+.lbl{font-size:11px;color:#6b7280;display:block;margin-bottom:3px;font-weight:500}
+.btn{padding:6px 12px;border-radius:7px;border:0.5px solid #d1d5db;background:#fff;cursor:pointer;font-size:12px;color:#111;display:inline-flex;align-items:center;gap:4px}
+.btn:hover{background:#f9fafb}
+.btn:active{transform:scale(.97)}
+.btn.p{background:#0d9488;color:#fff;border:none;font-weight:500}
+.btn.p:hover{background:#0f766e}
+.btn.d{color:#dc2626;border-color:#fca5a5}
+.btn.d:hover{background:#fef2f2}
+.btn.sm{padding:3px 7px;font-size:11px}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.gdot{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.gdot.m{background:#dbeafe;color:#1d4ed8}
+.gdot.f{background:#fce7f3;color:#be185d}
+.sec-bar{padding:7px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-top:0.5px solid #e5e7eb}
+.part-row{padding:8px 12px;border-top:0.5px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px}
+.part-num{font-size:11px;font-weight:700;color:#6b7280;min-width:18px;padding-top:1px}
+.part-info{flex:1;min-width:0}
+.part-title{font-size:13px;font-weight:500;line-height:1.3}
+.part-sub{font-size:11px;color:#6b7280;margin-top:1px}
+.part-assign{display:flex;flex-direction:column;gap:3px;min-width:160px}
+.part-assign select{font-size:11px;padding:4px 6px}
+.wk-scroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
+.wk-btn{padding:5px 10px;border-radius:7px;border:0.5px solid #e5e7eb;background:#fff;cursor:pointer;font-size:11px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;color:#6b7280}
+.wk-btn.on{background:#f0fdf4;border-color:#6ee7b7;color:#15803d;font-weight:500}
+.wk-btn.asamblea{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+.wk-btn.asamblea.on{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+.wk-btn.viajante{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.wk-btn.viajante.on{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8}
+.wk-btn:hover:not(.on){background:#f9fafb}
+.prog{height:3px;background:#e5e7eb;border-radius:2px;overflow:hidden;margin-top:6px}
+.prog-f{height:100%;background:#0d9488;border-radius:2px}
+.drop-zone{border:1.5px dashed #d1d5db;border-radius:10px;padding:28px;text-align:center;cursor:pointer}
+.drop-zone:hover,.drop-zone.drag{border-color:#0d9488;background:#f0fdfa}
+@media print{
+  .no-print{display:none!important}
+  #app{display:none!important}
+  #print-view{display:block!important;margin:0;padding:0}
+  body{margin:0;padding:0;background:#fff}
+}
+#print-view{display:none}
+.p-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:0.5px solid #e5e7eb}
+.p-row:last-child{border-bottom:none}
+.search-wrap{position:relative}
+.search-drop{display:none;position:absolute;z-index:50;top:100%;left:0;right:0;background:#fff;border:0.5px solid #d1d5db;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.12);max-height:160px;overflow-y:auto}
+.search-opt{padding:6px 10px;font-size:11px;cursor:pointer;border-bottom:0.5px solid #f3f4f6}
+.search-opt:hover,.search-opt.hi{background:#f0fdf4}
+.search-opt.clear{color:#dc2626;font-style:italic}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="print-view"></div>
+<script>
+// ═══════════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════════
+const SB_URL = 'https://kgyjrfsfjtdhmmrlrrzp.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtneWpyZnNmanRkaG1tcmxycnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MzY4OTQsImV4cCI6MjA5MjIxMjg5NH0.SHOXjX1KttMK4EpevgeHNa3Yl_JDActbNAAm5YtfTEY';
+
+async function sbFetch(path, opts={}){
+  const {prefer, extraHeaders, ...fetchOpts} = opts;
+  const headers = {
+    'apikey': SB_KEY,
+    'Authorization': 'Bearer '+SB_KEY,
+    'Content-Type': 'application/json',
+  };
+  if(prefer !== '') headers['Prefer'] = prefer || 'return=representation';
+  const r = await fetch(SB_URL+'/rest/v1/'+path, {
+    ...fetchOpts,
+    headers
+  });
+  if(!r.ok){ const t=await r.text(); throw new Error(t); }
+  const txt=await r.text();
+  return txt?JSON.parse(txt):null;
+}
+
+// Guardar hermanos en Supabase
+async function syncHermanos(){
+  setSyncStatus('spin');
+  try{
+    await sbFetch('hermanos?id=gte.0', {method:'DELETE', prefer:''});
+    if(S.people.length){
+      await sbFetch('hermanos', {
+        method:'POST',
+        prefer:'resolution=merge-duplicates',
+        body: JSON.stringify(S.people.map(p=>({id:p.id, nombre:p.n, genero:p.g, tipo:p.r||''})))
+      });
+    }
+    setSyncStatus('ok');
+  }catch(e){ console.error(e); setSyncStatus('err'); }
+}
+
+// Guardar semanas en Supabase
+async function syncSemanas(){
+  setSyncStatus('spin');
+  try{
+    await sbFetch('semanas?id=gte.0', {method:'DELETE', prefer:''});
+    if(S.weeks.length){
+      await sbFetch('semanas', {
+        method:'POST',
+        prefer:'resolution=merge-duplicates',
+        body: JSON.stringify(S.weeks.map(w=>({id:w.id, datos:w})))
+      });
+    }
+    setSyncStatus('ok');
+  }catch(e){ console.error(e); setSyncStatus('err'); }
+}
+
+// Cargar todo desde Supabase
+async function loadFromSupabase(){
+  setSyncStatus('spin');
+  try{
+    const [hRows, sRows] = await Promise.all([
+      sbFetch('hermanos?order=id'),
+      sbFetch('semanas?order=id')
+    ]);
+    if(hRows && hRows.length){
+      S.people = hRows.map(r=>({id:r.id, n:r.nombre, g:r.genero, r:r.tipo||''}));
+      S.nextId = Math.max(...S.people.map(p=>p.id), 200)+1;
+    }
+    if(sRows && sRows.length){
+      S.weeks = sRows.map(r=>r.datos);
+    }
+    setSyncStatus('ok');
+  }catch(e){ console.error(e); setSyncStatus('err'); }
+  render();
+}
+
+function setSyncStatus(st){
+  const d=document.getElementById('sync-dot');
+  if(d){ d.className='sync-dot '+st; d.title=st==='ok'?'Sincronizado':st==='err'?'Error de conexión':'Sincronizando...'; }
+}
+
+// Debounce para no guardar en cada keystroke
+let _syncHT=null, _syncST=null;
+function queueSyncHermanos(){ clearTimeout(_syncHT); _syncHT=setTimeout(syncHermanos,800); }
+function queueSyncSemanas(){ clearTimeout(_syncST); _syncST=setTimeout(syncSemanas,800); }
+
+// ═══════════════════════════════════════════
+// DATOS PRECARGADOS — Mayo–Julio 2026
+// ═══════════════════════════════════════════
+const REAL_WEEKS = [
+{id:1,dateRange:"4–10 de mayo",reading:"Isaías 58, 59",openSong:"21",closeSong:"42",middleSong:"100",presidente:null,oracion:null,parts:[
+  {id:"1a",n:1,t:"Disfrute al máximo de la bendición de Jehová",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"1b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"1c",n:3,t:"Lectura de la Biblia: Is 59:1-12",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"1d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"1e",n:5,t:"Empiece conversaciones (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"1f",n:6,t:"Discurso",s:"S",d:"5 min.",asst:false,at:null,as:null},
+  {id:"1g",n:7,t:'"Sean siempre hospitalarios"',s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"1h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:2,dateRange:"11–17 de mayo",reading:"Isaías 60, 61",openSong:"146",closeSong:"119",middleSong:"156",presidente:null,oracion:null,parts:[
+  {id:"2a",n:1,t:'"Levántate, oh, mujer, despide luz"',s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"2b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"2c",n:3,t:"Lectura de la Biblia: Is 61:1-9",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"2d",n:4,t:"Empiece conversaciones (predicación informal)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"2e",n:5,t:"Haga revisitas (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"2f",n:6,t:"Haga discípulos",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"2g",n:7,t:"Necesidades de la congregación",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"2h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:3,dateRange:"18–24 de mayo",reading:"Isaías 62–64",openSong:"44",closeSong:"151",middleSong:"115",presidente:null,oracion:null,parts:[
+  {id:"3a",n:1,t:"El Alfarero nos moldea con amor y compasión",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"3b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"3c",n:3,t:"Lectura de la Biblia: Is 64:4-12",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"3d",n:4,t:"Empiece conversaciones (predicación pública)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"3e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"3f",n:6,t:"Haga discípulos",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"3g",n:7,t:"Preparados para emergencias: Esté listo para lo imprevisto",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"3h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:4,dateRange:"25–31 de mayo",reading:"Isaías 65, 66",openSong:"24",closeSong:"55",middleSong:"80",presidente:null,oracion:null,parts:[
+  {id:"4a",n:1,t:"¡Cuánto amamos nuestro paraíso espiritual!",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"4b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"4c",n:3,t:"Lectura de la Biblia: Is 65:17-25",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"4d",n:4,t:"Empiece conversaciones (predicación informal)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"4e",n:5,t:"Empiece conversaciones (predicación pública)",s:"S",d:"2 min.",asst:true,at:null,as:null},
+  {id:"4f",n:6,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"4g",n:7,t:"Explique sus creencias: ¿Quién es el anticristo?",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"4h",n:8,t:"¿Tendrás tú una vida llena de cosas buenas?",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"4i",n:9,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:5,dateRange:"1–7 de junio",reading:"Jeremías 1–3",openSong:"84",closeSong:"18",middleSong:"76",presidente:null,oracion:null,parts:[
+  {id:"5a",n:1,t:'"No te dejes intimidar [...], porque yo estoy contigo"',s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"5b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"5c",n:3,t:"Lectura de la Biblia: Jer 3:14-25",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"5d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"5e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"5f",n:6,t:"Haga discípulos",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"5g",n:7,t:"¡Sé valiente como Jeremías!",s:"C",d:"6 min.",asst:false,at:null,as:null},
+  {id:"5h",n:8,t:'"Listos para presentar una defensa con apacibilidad"',s:"C",d:"9 min.",asst:false,at:null,as:null},
+  {id:"5i",n:9,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:6,dateRange:"8–14 de junio",reading:"Jeremías 4–6",openSong:"56",closeSong:"68",middleSong:"60",presidente:null,oracion:null,parts:[
+  {id:"6a",n:1,t:"No nos enfermemos espiritualmente como los de Judá",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"6b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"6c",n:3,t:"Lectura de la Biblia: Jer 5:1-11",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"6d",n:4,t:"Empiece conversaciones (predicación pública)",s:"S",d:"2 min.",asst:true,at:null,as:null},
+  {id:"6e",n:5,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"2 min.",asst:true,at:null,as:null},
+  {id:"6f",n:6,t:"Haga revisitas (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"6g",n:7,t:"Explique sus creencias: ¿De dónde proviene el nombre testigos de Jehová?",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"6h",n:8,t:"Proteja su corazón de la información falsa",s:"C",d:"8 min.",asst:false,at:null,as:null},
+  {id:"6i",n:9,t:"Necesidades de la congregación",s:"C",d:"7 min.",asst:false,at:null,as:null},
+  {id:"6j",n:10,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:7,dateRange:"15–21 de junio",reading:"Jeremías 7, 8",openSong:"152",closeSong:"71",middleSong:"91",presidente:null,oracion:null,parts:[
+  {id:"7a",n:1,t:"No respetaron el templo de Jehová",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"7b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"7c",n:3,t:"Lectura de la Biblia: Jer 8:4-13",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"7d",n:4,t:"Empiece conversaciones (predicación informal)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"7e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"7f",n:6,t:"Haga discípulos",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"7g",n:7,t:"¿Cómo podemos demostrar que respetamos el Salón del Reino?",s:"C",d:"5 min.",asst:false,at:null,as:null},
+  {id:"7h",n:8,t:"Cómo usamos las donaciones: Mantenemos nuestros Salones del Reino en buen estado",s:"C",d:"10 min.",asst:false,at:null,as:null},
+  {id:"7i",n:9,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:8,dateRange:"22–28 de junio",reading:"Jeremías 9, 10",openSong:"5",closeSong:"58",middleSong:"48",presidente:null,oracion:null,parts:[
+  {id:"8a",n:1,t:"¿De qué presumirá usted?",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"8b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"8c",n:3,t:"Lectura de la Biblia: Jer 9:13-24",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"8d",n:4,t:"Empiece conversaciones (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"8e",n:5,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"8f",n:6,t:"Haga revisitas (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"8g",n:7,t:"No nos dejemos engañar, apoyemos el Reino de Dios",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"8h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:9,dateRange:"29 jun – 5 de julio",reading:"Jeremías 11, 12",openSong:"106",closeSong:"69",middleSong:"109",presidente:null,oracion:null,parts:[
+  {id:"9a",n:1,t:'Cómo "competir en una carrera contra caballos"',s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"9b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"9c",n:3,t:"Lectura de la Biblia: Jer 12:1-11",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"9d",n:4,t:"Empiece conversaciones (predicación informal)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"9e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"9f",n:6,t:"Discurso",s:"S",d:"5 min.",asst:false,at:null,as:null},
+  {id:"9g",n:7,t:"Necesidades de la congregación",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"9h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+];
+
+const SECS={
+  T:{label:"Tesoros de la Biblia",color:"#92400e",bg:"#fffbeb",border:"#fcd34d"},
+  S:{label:"Seamos Mejores Maestros",color:"#1e40af",bg:"#eff6ff",border:"#93c5fd"},
+  C:{label:"Nuestra Vida Cristiana",color:"#065f46",bg:"#ecfdf5",border:"#6ee7b7"},
+};
+
+// ═══════════════════════════════════════════
+// ESTADO
+// ═══════════════════════════════════════════
+let S={
+  tab:0, people:[], weeks:[], pdfReady:false, xlsxReady:false,
+  activeWk:0, pf:{n:'',g:'M',r:''}, editId:null, filterG:'all',
+  expanded:{}, showPreview:false, parseMsg:null, importMsg:null, nextId:200,
+};
+
+function render(){ document.getElementById('app').innerHTML=buildApp(); bind(); }
+
+// ═══════════════════════════════════════════
+// ICONOS
+// ═══════════════════════════════════════════
+const I={
+  users:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  file:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  grid:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
+  print:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 6,2 18,2 18,9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>`,
+  plus:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  trash:(sz=12)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`,
+  edit:(sz=12)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  up:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>`,
+  ok:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  warn:(sz=14)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  dw:(sz=11)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
+};
+
+// ═══════════════════════════════════════════
+// TAB HERMANOS
+// ═══════════════════════════════════════════
+function buildPeople(){
+  const {people,pf,editId,filterG}=S;
+  const filt=filterG==='all'?people:people.filter(p=>p.g===filterG);
+  const rl={anciano:'Anciano',siervo:'Siervo Min.',precursor:'Precursor','':'Publicador'};
+  const rows=filt.map(p=>`
+    <div class="p-row">
+      <span class="gdot ${p.g.toLowerCase()}">${p.g==='M'?'H':'M'}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:500;font-size:13px">${p.n}</div>
+        <div style="font-size:11px;color:#6b7280">${rl[p.r]||p.r||'Publicador'}</div>
+      </div>
+      <button class="btn sm" data-a="editP" data-id="${p.id}">${I.edit()}</button>
+      <button class="btn sm d" data-a="delP" data-id="${p.id}">${I.trash()}</button>
+    </div>`).join('');
+  const filters=[['all',`Todos (${people.length})`],['M',`H (${people.filter(p=>p.g==='M').length})`],['F',`M (${people.filter(p=>p.g==='F').length})`]]
+    .map(([v,l])=>`<button class="btn sm ${filterG===v?'p':''}" data-a="filt" data-v="${v}">${l}</button>`).join('');
+  const importMsgHtml=S.importMsg?`<div class="card ${S.importMsg.ok?'ok':'err'}" style="margin-bottom:8px;padding:8px 12px;display:flex;gap:8px;align-items:flex-start">
+    <span style="color:${S.importMsg.ok?'#15803d':'#dc2626'}">${S.importMsg.ok?I.ok():I.warn()}</span>
+    <span style="font-size:12px;color:${S.importMsg.ok?'#15803d':'#dc2626'}">${S.importMsg.msg}</span>
+  </div>`:'';
+  return `
+    <div class="card muted" style="margin-bottom:8px">
+      <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px">IMPORTAR DESDE EXCEL</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Sube tu archivo <strong>plantilla_hermanos.xlsx</strong> para cargar el listado automáticamente.</div>
+      <button class="btn p" id="xlsx-btn" ${!S.xlsxReady?'disabled':''}>${I.up()} ${S.xlsxReady?'Importar Excel':'Cargando...'}</button>
+      <input type="file" id="xlsx-file" accept=".xlsx,.xls" style="display:none">
+    </div>
+    ${importMsgHtml}
+    <div class="card muted" style="margin-bottom:10px">
+      <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:8px">${editId?'EDITAR':'AGREGAR'} HERMANO/A MANUALMENTE</div>
+      <div style="display:grid;grid-template-columns:1fr 70px 110px;gap:6px;margin-bottom:8px">
+        <div><label class="lbl">Nombre</label><input type="text" id="pf-n" value="${pf.n}" placeholder="Nombre completo"></div>
+        <div><label class="lbl">Género</label><select id="pf-g"><option value="M" ${pf.g==='M'?'selected':''}>H (Hombre)</option><option value="F" ${pf.g==='F'?'selected':''}>M (Mujer)</option></select></div>
+        <div><label class="lbl">Tipo</label><select id="pf-r"><option value="" ${!pf.r?'selected':''}>Publicador</option><option value="anciano" ${pf.r==='anciano'?'selected':''}>Anciano</option><option value="siervo" ${pf.r==='siervo'?'selected':''}>Siervo Min.</option><option value="precursor" ${pf.r==='precursor'?'selected':''}>Precursor</option></select></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn p" data-a="saveP">${I.plus()} ${editId?'Guardar cambios':'Agregar'}</button>
+        ${editId?`<button class="btn" data-a="cancelP">Cancelar</button>`:''}
+      </div>
+    </div>
+    <div style="display:flex;gap:5px;margin-bottom:8px">${filters}</div>
+    <div class="card" style="padding:0;overflow:hidden">${rows||'<div style="padding:20px;text-align:center;color:#6b7280;font-size:12px">Sin hermanos. Importa el Excel o agrega manualmente.</div>'}</div>
+  `;
+}
+
+// ═══════════════════════════════════════════
+// TAB PROGRAMA
+// ═══════════════════════════════════════════
+function buildProgram(){
+  const {weeks,pdfReady,parseMsg}=S;
+  const parseMsgHtml=parseMsg?`<div class="card ${parseMsg.ok?'ok':'err'}" style="margin-bottom:8px;padding:8px 12px;display:flex;gap:8px;align-items:flex-start">
+    <span style="color:${parseMsg.ok?'#15803d':'#dc2626'}">${parseMsg.ok?I.ok():I.warn()}</span>
+    <span style="font-size:12px;color:${parseMsg.ok?'#15803d':'#dc2626'}">${parseMsg.msg}</span>
+  </div>`:'';
+  const weeksHtml=weeks.length?weeks.map(w=>{
+    const expanded=S.expanded[w.id];
+    const miss=w.parts.filter(p=>!p.at).length;
+    return `<div class="card" style="padding:0;overflow:hidden;margin-bottom:6px">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;background:#f9fafb" data-a="toggleW" data-id="${w.id}">
+        <div style="flex:1">
+          <div style="font-weight:500;font-size:13px">Semana del ${w.dateRange}</div>
+          <div style="font-size:11px;color:#6b7280">${w.reading}${w.openSong?` · ♪ ${w.openSong} / ${w.middleSong||'—'} / ${w.closeSong}`:''}</div>
+        </div>
+        <span class="bdg ${miss?'':'g'}">${miss?`${miss} sin asignar`:`${w.parts.length} partes`}</span>
+        ${I.dw()}
+      </div>
+      ${expanded?`<div style="padding:8px 12px;border-top:0.5px solid #e5e7eb">
+        ${w.parts.map(p=>`<div style="display:flex;gap:8px;padding:4px 0;border-bottom:0.5px solid #e5e7eb;font-size:12px">
+          <span style="color:${SECS[p.s].color};font-weight:700;min-width:12px">${p.n}</span>
+          <span style="flex:1">${p.t}</span>
+          <span style="color:#6b7280">${p.d}</span>
+        </div>`).join('')}
+      </div>`:''}
+    </div>`;
+  }).join(''):'';
+  return `
+    <div class="card muted" style="margin-bottom:10px">
+      <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px">CARGAR DATOS PRECARGADOS</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Carga las 9 semanas de Mayo – Julio 2026 ya incluidas en la app.</div>
+      <button class="btn p" data-a="loadReal">${I.ok()} Cargar Mayo–Junio 2026</button>
+    </div>
+    <div class="card muted" style="margin-bottom:10px">
+      <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px">IMPORTAR DESDE PDF</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Sube el archivo <strong>mwb_S_YYYYMM.pdf</strong> para extraer las semanas automáticamente.</div>
+      <div class="drop-zone" id="dz" style="margin-bottom:8px">
+        <div style="font-size:24px;margin-bottom:6px">📄</div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px">Arrastra el PDF aquí</div>
+        <div style="font-size:11px;color:#6b7280">o haz clic en el botón</div>
+      </div>
+      <button class="btn p" id="pdf-btn" ${!pdfReady?'disabled':''}>${I.up()} ${pdfReady?'Subir PDF':'Cargando lector PDF...'}</button>
+      <input type="file" id="pdf-file" accept=".pdf" style="display:none">
+    </div>
+    ${parseMsgHtml}
+    ${weeks.length?`<div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px;text-transform:uppercase">${weeks.length} semanas cargadas</div>${weeksHtml}`:''}
+    <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid #e5e7eb">
+      <button class="btn d sm" data-a="clearAll">🗑 Borrar todos los datos</button>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════
+// TAB ASIGNACIONES
+// ═══════════════════════════════════════════
+const RESTRICTED_ROLES=new Set(['anciano','siervo']);
+
+function getPool(partId,secKey,partTitle){
+  const restricted=S.people.filter(p=>RESTRICTED_ROLES.has(p.r));
+  const menOnly=S.people.filter(p=>p.g==='M');
+  const all=S.people;
+  if(partId==='presidente') return restricted;
+  if(/lectura de la biblia/i.test(partTitle)) return menOnly;
+  if(secKey==='T') return restricted;
+  if(secKey==='C') return restricted;
+  if(/discurso/i.test(partTitle)) return menOnly;
+  return all;
+}
+function getAssistPool(partTitle){
+  if(/estudio b.blico/i.test(partTitle)) return S.people.filter(p=>p.g==='M');
+  return S.people;
+}
+function buildSearchSelect(inputId,hiddenId,pool,selectedId,placeholder){
+  const sel=pool.find(p=>p.id===selectedId);
+  return `<div class="search-wrap">
+    <input type="text" class="search-inp" id="${inputId}" value="${sel?sel.n:''}" placeholder="${placeholder}" autocomplete="off" data-hidden="${hiddenId}" style="font-size:11px;padding:4px 6px;width:100%">
+    <input type="hidden" id="${hiddenId}" value="${selectedId||''}">
+    <div class="search-drop" id="drop-${inputId}"></div>
+  </div>`;
+}
+
+function buildAssignments(){
+  const {weeks,activeWk}=S;
+  if(!weeks.length) return `<div style="text-align:center;padding:40px;color:#6b7280"><div style="font-size:32px;margin-bottom:8px;opacity:.4">📋</div><div style="font-weight:500">Sin programa cargado</div><div style="font-size:12px;margin-top:4px">Ve a "Programa" → "Cargar Mayo–Junio 2026"</div></div>`;
+
+  const wkBtns=weeks.map((w,i)=>{
+    const tipo=w.tipo||'normal';
+    const miss=tipo==='asamblea'?0:w.parts.filter(p=>!p.at).length+(!w.presidente?1:0)+(!w.oracion?1:0);
+    const tipoCls=tipo==='asamblea'?'asamblea':tipo==='viajante'?'viajante':'';
+    const tipoIcon=tipo==='asamblea'?'🏛️ ':tipo==='viajante'?'✈️ ':'';
+    return `<button class="wk-btn ${activeWk===i?'on':''} ${tipoCls}" data-a="setWk" data-i="${i}">
+      ${tipoIcon}${w.dateRange.split(' de ')[0]} ${w.dateRange.includes('junio')?'jun':w.dateRange.includes('julio')?'jul':'may'}
+      ${miss?`<span class="bdg">${miss}</span>`:''}
+    </button>`;
+  }).join('');
+
+  const w=weeks[activeWk];
+  const tipo=w.tipo||'normal';
+
+  // ── Selector de tipo de semana ──
+  const tipoSelector=`
+    <div style="padding:10px 12px;background:#f9fafb;border-bottom:0.5px solid #e5e7eb;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:11px;color:#6b7280;font-weight:600;margin-right:4px">Tipo de semana:</span>
+      <button class="btn sm ${tipo==='normal'?'p':''}" data-a="setTipo" data-v="normal">📋 Normal</button>
+      <button class="btn sm ${tipo==='asamblea'?'p':''}" data-a="setTipo" data-v="asamblea" style="${tipo==='asamblea'?'background:#f59e0b;border:none':''}">🏛️ Asamblea</button>
+      <button class="btn sm ${tipo==='viajante'?'p':''}" data-a="setTipo" data-v="viajante" style="${tipo==='viajante'?'background:#3b82f6;border:none':''}">✈️ Visita viajante</button>
+    </div>`;
+
+  // ── Semana de ASAMBLEA ──
+  if(tipo==='asamblea'){
+    return `
+      <div class="wk-scroll no-print">${wkBtns}</div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:10px 12px;background:#f9fafb;border-bottom:0.5px solid #e5e7eb">
+          <div style="font-weight:500">Semana del ${w.dateRange}</div>
+          <div style="font-size:11px;color:#6b7280">${w.reading}</div>
+        </div>
+        ${tipoSelector}
+        <div style="padding:32px;text-align:center">
+          <div style="font-size:40px;margin-bottom:10px">🏛️</div>
+          <div style="font-weight:600;font-size:15px;color:#92400e;margin-bottom:6px">Semana de Asamblea</div>
+          <div style="font-size:13px;color:#6b7280">No hay reunión entre semana.<br>Esta semana no requiere programación.</div>
+        </div>
+      </div>`;
+  }
+
+  // ── Partes según tipo (normal o viajante) ──
+  // Para visita del viajante: quitar estudio bíblico y reemplazar por discurso del superintendente
+  let partsToShow = w.parts;
+  let visitanteNote = '';
+  if(tipo==='viajante'){
+    partsToShow = w.parts.map(p=>{
+      if(/estudio b.blico de la congregaci.n/i.test(p.t)){
+        return {...p, t:'Discurso del Superintendente de Circuito', d:'30 min.', asst:false, as:null, _viajante:true};
+      }
+      return p;
+    });
+    visitanteNote=`<div style="padding:8px 12px;background:#eff6ff;border-bottom:0.5px solid #93c5fd;font-size:11px;color:#1d4ed8;display:flex;gap:6px;align-items:center">
+      ✈️ <strong>Visita del Superintendente de Circuito</strong> — El estudio bíblico es reemplazado por el discurso del viajante.
+    </div>`;
+  }
+
+  const presPool=S.people.filter(p=>RESTRICTED_ROLES.has(p.r));
+  const presRow=`
+    <div style="padding:7px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:#f5f3ff;color:#6d28d9;border-top:0.5px solid #e5e7eb">Presidencia · solo Anciano / Siervo</div>
+    <div class="part-row">
+      <div class="part-num" style="color:#6d28d9">★</div>
+      <div class="part-info"><div class="part-title">Presidente</div><div class="part-sub">Dirige toda la reunión</div></div>
+      <div class="part-assign" style="min-width:185px">${buildSearchSelect('si-presidente','hv-presidente',presPool,w.presidente||null,'— Anciano / Siervo —')}</div>
+    </div>`;
+
+  const secKeys=['T','S','C'];
+  const secRows=secKeys.map(sk=>{
+    const parts=partsToShow.filter(p=>p.s===sk);
+    if(!parts.length) return '';
+    const sec=SECS[sk];
+    const pRows=parts.map(p=>{
+      // Discurso del viajante: solo anciano/siervo, sin ayudante
+      const pool=p._viajante?S.people.filter(x=>RESTRICTED_ROLES.has(x.r)):getPool(p.id,sk,p.t);
+      const aPool=getAssistPool(p.t);
+      const assistLabel=/estudio b.blico/i.test(p.t)?'— Lector (hombre) —':'— Ayudante —';
+      const placeholder=p._viajante?'— Superintendente (viajante) —':'— Buscar hermano/a —';
+      return `<div class="part-row" ${p._viajante?'style="background:#f0f9ff"':''}>
+        <div class="part-num" style="color:${sec.color}">${p.n}</div>
+        <div class="part-info">
+          <div class="part-title">${p.t}${p._viajante?' <span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:4px">Viajante</span>':''}</div>
+          <div class="part-sub">${p.d}</div>
+        </div>
+        <div class="part-assign" style="min-width:185px">
+          ${buildSearchSelect('si-'+p.id,'hv-'+p.id,pool,p.at,placeholder)}
+          ${p.asst&&!p._viajante?buildSearchSelect('si-as-'+p.id,'hv-as-'+p.id,aPool,p.as,assistLabel):''}
+        </div>
+      </div>`;
+    }).join('');
+    const middleSongBar=sk==='C'&&w.middleSong?`<div style="padding:5px 12px;font-size:11px;color:#6b7280;background:#f9fafb;border-top:0.5px solid #e5e7eb">♪ Canción ${w.middleSong} y oración</div>`:'';
+    return `${middleSongBar}<div class="sec-bar" style="background:${sec.bg};color:${sec.color}">${sec.label}</div>${pRows}`;
+  }).join('');
+
+  const oracionRow=`
+    <div style="padding:7px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:#f0fdf4;color:#065f46;border-top:0.5px solid #e5e7eb">Oración final · solo hombres</div>
+    <div class="part-row">
+      <div class="part-num" style="color:#065f46">🙏</div>
+      <div class="part-info"><div class="part-title">Oración final</div><div class="part-sub">Cierre · ♪ Canción ${w.closeSong||'—'}</div></div>
+      <div class="part-assign" style="min-width:185px">${buildSearchSelect('si-oracion','hv-oracion',S.people.filter(p=>p.g==='M'),w.oracion||null,'— Buscar hermano (hombre) —')}</div>
+    </div>`;
+
+  const totalParts=w.parts.length+2;
+  const done=w.parts.filter(p=>p.at).length+(w.presidente?1:0)+(w.oracion?1:0);
+  const pct=Math.round(done/totalParts*100);
+
+  return `
+    <div class="wk-scroll no-print">${wkBtns}</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:10px 12px;background:#f9fafb;border-bottom:0.5px solid #e5e7eb">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:500">Semana del ${w.dateRange}</div>
+            <div style="font-size:11px;color:#6b7280">${w.reading}${w.openSong?` · ♪ ${w.openSong} / ${w.middleSong||'—'} / ${w.closeSong}`:''}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;font-weight:600;color:${pct===100?'#15803d':'#b45309'}">${pct}%</div>
+            <div style="font-size:11px;color:#6b7280">${done}/${totalParts}</div>
+          </div>
+        </div>
+        <div class="prog"><div class="prog-f" style="width:${pct}%;background:${pct===100?'#22c55e':'#0d9488'}"></div></div>
+      </div>
+      ${tipoSelector}
+      ${visitanteNote}
+      ${presRow}${secRows}${oracionRow}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+// TAB GENERAR
+// ═══════════════════════════════════════════
+function buildGenerate(){
+  const {weeks,showPreview}=S;
+  if(!weeks.length) return `<div style="text-align:center;padding:40px;color:#6b7280"><div style="font-size:32px;opacity:.4;margin-bottom:8px">🖨️</div><div style="font-weight:500">Sin programa cargado</div></div>`;
+  const validations=weeks.map(w=>({w,missing:w.parts.filter(p=>!p.at).map(p=>`${p.n}. ${p.t}`)}));
+  const totalMissing=validations.reduce((s,v)=>s+v.missing.length,0);
+  const allOk=totalMissing===0;
+  const statusCard=allOk
+    ?`<div class="card ok" style="display:flex;gap:10px;padding:12px;margin-bottom:10px"><span style="color:#15803d">${I.ok(18)}</span><div><div style="font-weight:500;color:#15803d">Todo completo</div><div style="font-size:12px;color:#16a34a">Todas las partes de las ${weeks.length} semanas están asignadas.</div></div></div>`
+    :`<div class="card warn" style="margin-bottom:10px"><div style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><span style="color:#b45309">${I.warn()}</span><span style="font-weight:500;color:#b45309">${totalMissing} parte(s) sin asignar</span></div>${validations.filter(v=>v.missing.length).map(({w,missing})=>`<div style="margin-bottom:6px"><div style="font-size:11px;font-weight:600;color:#92400e">Semana del ${w.dateRange}:</div>${missing.map(m=>`<div style="font-size:11px;color:#b45309;padding-left:10px">• ${m}</div>`).join('')}</div>`).join('')}</div>`;
+  const statsCards=weeks.map(w=>{
+    const done=w.parts.filter(p=>p.at).length;
+    const pct=Math.round(done/w.parts.length*100);
+    return `<div class="card" style="padding:10px"><div style="font-size:10px;color:#6b7280">${w.dateRange}</div><div style="font-size:20px;font-weight:500;color:${pct===100?'#15803d':'#b45309'}">${pct}%</div><div class="prog"><div class="prog-f" style="width:${pct}%;background:${pct===100?'#22c55e':'#f59e0b'}"></div></div></div>`;
+  }).join('');
+  const preview=showPreview?buildPrintHTML():'';
+  return `
+    ${statusCard}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px">${statsCards}</div>
+    <div class="btn-row no-print">
+      <button class="btn p" data-a="print">${I.print()} Imprimir programa</button>
+      <button class="btn" data-a="printSlips">${I.print()} Imprimir boletas</button>
+      <button class="btn" data-a="togglePreview">${showPreview?'Ocultar':'Vista previa'}</button>
+    </div>
+    ${preview?`<div style="margin-top:12px;border:0.5px solid #d1d5db;border-radius:8px;overflow:hidden">${preview}</div>`:''}`;
+}
+
+// ═══════════════════════════════════════════
+// IMPRIMIR — diseño igual al tablero PDF
+// ═══════════════════════════════════════════
+function buildPrintHTML(){
+  const {weeks,people}=S;
+  const pName=id=>{const p=people.find(x=>x.id===id);return p?p.n:'—';};
+  function addMin(base,mins){const[h,m]=base.split(':').map(Number);const t=h*60+m+mins;return `${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;}
+  function parseMins(dur){const m=String(dur).match(/(\d+)/);return m?parseInt(m[1]):0;}
+
+  const AZUL='#073a7a';
+  const SEC={
+    T:{bg:'#3b7d8a',label:'TESOROS DE LA BIBLIA'},
+    S:{bg:'#d48f01',label:'SEAMOS MEJORES MAESTROS'},
+    C:{bg:'#bd2e12',label:'NUESTRA VIDA CRISTIANA'},
+  };
+
+  // LAYOUT DE TABLA: 3 columnas fijas
+  // col1: 34px  (hora)
+  // col2: auto  (título — ocupa todo el espacio restante, hace wrap si es largo)
+  // col3: 130px (nombre — columna derecha fija, alineado a la izquierda, no se mueve)
+
+  const tdHora  = `style="width:34px;font-family:'Poppins',sans-serif;font-size:7.5px;font-weight:700;color:${AZUL};padding:3px 4px 3px 8px;white-space:nowrap;vertical-align:top"`;
+  const tdTit   = `style="font-family:'Poppins',sans-serif;font-size:8px;color:#222;padding:3px 10px 3px 0;vertical-align:top"`;
+  const tdTitIt = `style="font-family:'Poppins',sans-serif;font-size:8px;font-style:italic;color:#555;padding:3px 10px 3px 0;vertical-align:top"`;
+  const tdNom   = `style="width:130px;font-family:'Poppins',sans-serif;font-size:8.5px;font-weight:700;color:${AZUL};padding:3px 10px 3px 0;vertical-align:top;text-align:left;word-wrap:break-word"`;
+  const tdNomEmpty = `style="width:130px;padding:3px 10px 3px 0;vertical-align:top"`;
+
+  function filaSimple(hora, texto){
+    return `<tr>
+      <td ${tdHora}>${hora}</td>
+      <td colspan="2" ${tdTitIt}>${texto}</td>
+    </tr>`;
+  }
+
+  function filaParte(hora, num, titulo, dur, nombre){
+    const tituloHtml = `<b>${num}.</b> ${titulo} <span style="font-size:7px;color:#999">(${dur})</span>`;
+    if(nombre){
+      return `<tr>
+        <td ${tdHora}>${hora}</td>
+        <td ${tdTit}>${tituloHtml}</td>
+        <td ${tdNom}>${nombre}</td>
+      </tr>`;
+    }
+    return `<tr>
+      <td ${tdHora}>${hora}</td>
+      <td ${tdTit}>${tituloHtml}</td>
+      <td ${tdNomEmpty}><span style="font-family:'Poppins',sans-serif;font-size:7px;font-weight:600;color:#bd2e12">SIN ASIGNAR</span></td>
+    </tr>`;
+  }
+
+  function filaOracion(hora, cancion, nombre){
+    const texto = `&#9835; Canción ${cancion} y oración`;
+    if(nombre){
+      return `<tr>
+        <td ${tdHora}>${hora}</td>
+        <td ${tdTitIt}>${texto}</td>
+        <td ${tdNom}>${nombre}</td>
+      </tr>`;
+    }
+    return `<tr>
+      <td ${tdHora}>${hora}</td>
+      <td colspan="2" ${tdTitIt}>${texto}</td>
+    </tr>`;
+  }
+
+  function secBar(sec){
+    return `<tr>
+      <td colspan="3" style="background:${sec.bg};padding:3.5px 8px">
+        <span style="font-family:'Poppins',sans-serif;font-size:7px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.08em">${sec.label}</span>
+      </td>
+    </tr>`;
+  }
+
+  function buildWeekBlock(w){
+    if((w.tipo||'normal')==='asamblea'){
+      return `<div style="border:1.5px solid #d48f01;border-radius:4px;overflow:hidden;break-inside:avoid">
+        <div style="background:#d48f01;padding:6px 10px">
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:9.5px;color:#fff;text-transform:uppercase">&#127963; ${w.dateRange.toUpperCase()} — SEMANA DE ASAMBLEA</span>
+        </div>
+        <div style="padding:12px;text-align:center;background:#fffbeb">
+          <span style="font-family:'Poppins',sans-serif;font-size:9px;color:#7D6608;font-weight:600">Sin reunión entre semana</span>
+        </div>
+      </div>`;
+    }
+
+    const esViajante=(w.tipo||'normal')==='viajante';
+    if(esViajante){
+      w={...w,parts:w.parts.map(p=>/estudio b.blico de la congregaci.n/i.test(p.t)?{...p,t:'Discurso del Superintendente de Circuito',asst:false,as:null}:p)};
+    }
+
+    let clock='17:00';
+    let rows='';
+
+    rows += filaSimple(clock,`&#9835; Canción ${w.openSong||'—'} y oración`);
+    clock=addMin(clock,5);
+    rows += filaSimple(clock,'Palabras de introducción (1 min.)');
+    clock=addMin(clock,1);
+
+    let prevSec=null;
+    w.parts.forEach(p=>{
+      if(p.s!==prevSec){
+        if(p.s==='C'){
+          rows+=filaSimple(clock,`&#9835; Canción ${w.middleSong||'—'} y oración`);
+          clock=addMin(clock,5);
+        }
+        rows+=secBar(SEC[p.s]);
+        prevSec=p.s;
+      }
+      const person=p.at?pName(p.at):null;
+      const asst=p.as?pName(p.as):null;
+      const nameStr=person?(asst?person+' / '+asst:person):null;
+      rows+=filaParte(clock,p.n,p.t,p.d,nameStr);
+      clock=addMin(clock,parseMins(p.d));
+    });
+
+    rows+=filaSimple(clock,'Palabras de conclusión');
+    clock=addMin(clock,1);
+    const orPerson=w.oracion?pName(w.oracion):null;
+    rows+=filaOracion(clock,w.closeSong||'—',orPerson);
+
+    const presNombre=w.presidente?pName(w.presidente):'—';
+
+    return `<div style="display:flex;border:1.5px solid #c8d6e5;border-radius:4px;overflow:hidden;break-inside:avoid">
+      <div style="background:${AZUL};width:14px;flex-shrink:0;position:relative;overflow:hidden">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-family:'Poppins',sans-serif;font-size:5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.08em">REUNIÓN VIDA Y MINISTERIO CRISTIANOS</div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="background:${AZUL};padding:5px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:9px;color:#fff;text-transform:uppercase;letter-spacing:.03em">${w.dateRange.toUpperCase()} — ${w.reading.toUpperCase()}</div>
+          <div style="font-family:'Poppins',sans-serif;font-size:7.5px;color:#b8d0f0;white-space:nowrap;flex-shrink:0">Presidente: <b style="color:#fff">${presNombre}</b></div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+          <colgroup>
+            <col style="width:34px">
+            <col>
+            <col style="width:130px">
+          </colgroup>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  const pages=[];
+  for(let i=0;i<weeks.length;i+=2) pages.push(weeks.slice(i,i+2));
+
+  const pagesHtml=pages.map(pg=>`
+    <div style="width:215.9mm;min-height:279.4mm;padding:8mm 10mm;box-sizing:border-box;background:#fff;page-break-after:always">
+      <div style="text-align:center;margin-bottom:7px;padding-bottom:6px;border-bottom:2px solid ${AZUL}">
+        <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:${AZUL};text-transform:uppercase;letter-spacing:.07em">Reunión Vida y Ministerio Cristianos</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:8.5px;color:#777;margin-top:1px">Congregación Nueva Valencia — Arauquita</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${pg.map(w=>buildWeekBlock(w)).join('')}
+      </div>
+      <div style="margin-top:6px;text-align:right;font-family:'Poppins',sans-serif;font-size:6.5px;color:#ccc">VJM Nueva Valencia</div>
+    </div>`).join('');
+
+  return `<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  @page{size:letter;margin:0}
+  @media print{
+    body{margin:0;padding:0}
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+    table{table-layout:fixed!important}
+    td{overflow:hidden;word-wrap:break-word}
+  }
+</style>
+${pagesHtml}`;
+}
+
+
+function buildSlipsHTML(){
+  const {weeks,people}=S;
+  const pName=id=>{const p=people.find(x=>x.id===id);return p?p.n:'';};
+  const slips=[];
+  weeks.forEach(w=>{
+    w.parts.forEach(p=>{
+      if(!p.at) return;
+      slips.push({week:w.dateRange,title:p.t,duration:p.d,person:pName(p.at),assistant:p.as?pName(p.as):'',section:SECS[p.s].label});
+    });
+  });
+  const slipsHtml=slips.map(sl=>`<div style="border:1px solid #999;border-radius:4px;padding:8px 10px;margin:4px;display:inline-block;width:220px;vertical-align:top;font-size:10px;font-family:Arial,sans-serif">
+    <div style="font-size:8px;font-weight:bold;text-transform:uppercase;color:#666;margin-bottom:4px">Reunión Vida y Ministerio</div>
+    <div style="font-weight:bold;margin-bottom:6px">${sl.title}</div>
+    <div style="display:flex;gap:4px;margin-bottom:2px"><span style="color:#666;width:70px">Semana:</span><span>${sl.week}</span></div>
+    <div style="display:flex;gap:4px;margin-bottom:2px"><span style="color:#666;width:70px">Sección:</span><span>${sl.section}</span></div>
+    <div style="display:flex;gap:4px;margin-bottom:2px"><span style="color:#666;width:70px">Duración:</span><span>${sl.duration}</span></div>
+    <div style="border-top:0.5px solid #ccc;margin-top:6px;padding-top:6px">
+      <div style="display:flex;gap:4px;margin-bottom:2px"><span style="color:#666;width:70px">Participante:</span><span style="font-weight:bold">${sl.person}</span></div>
+      ${sl.assistant?`<div style="display:flex;gap:4px"><span style="color:#666;width:70px">Ayudante:</span><span style="font-weight:bold">${sl.assistant}</span></div>`:''}
+    </div>
+    <div style="margin-top:6px;font-size:9px;color:#666">□ Salón principal &nbsp; □ Salón auxiliar</div>
+  </div>`).join('');
+  return `<div style="padding:10px">${slipsHtml}</div>`;
+}
+
+// ═══════════════════════════════════════════
+// APP PRINCIPAL
+// ═══════════════════════════════════════════
+function buildApp(){
+  const {tab,people,weeks}=S;
+  const totMiss=weeks.reduce((s,w)=>s+w.parts.filter(p=>!p.at).length,0);
+  const TABS=[
+    {l:"Hermanos",i:"users",b:people.length,bc:"g"},
+    {l:"Programa",i:"file",b:weeks.length||null,bc:"g"},
+    {l:"Asignaciones",i:"grid",b:totMiss||null,bc:""},
+    {l:"Generar",i:"print",b:null},
+  ];
+  const tabHtml=TABS.map((t,i)=>`<button class="tab ${tab===i?'on':''}" data-a="tab" data-i="${i}">${I[t.i]()} ${t.l}${t.b?`<span class="bdg ${t.bc}">${t.b}</span>`:''}</button>`).join('');
+  let content='';
+  if(tab===0) content=buildPeople();
+  if(tab===1) content=buildProgram();
+  if(tab===2) content=buildAssignments();
+  if(tab===3) content=buildGenerate();
+  return `
+    <div class="hdr no-print">
+      <div class="hdr-top">
+        <div class="accent-bar"></div>
+        <div class="hdr-title">Programación Vida y Ministerio</div>
+        <div id="sync-dot" class="sync-dot" title="Conectando..."></div>
+      </div>
+      <div class="tabs">${tabHtml}</div>
+    </div>
+    <div class="body">${content}</div>`;
+}
+
+// ═══════════════════════════════════════════
+// EVENTOS
+// ═══════════════════════════════════════════
+function bind(){
+  document.querySelectorAll('[data-a]').forEach(el=>{
+    el.addEventListener(el.tagName==='SELECT'?'change':'click',handleEv);
+  });
+  document.getElementById('pdf-btn')?.addEventListener('click',()=>document.getElementById('pdf-file')?.click());
+  document.getElementById('pdf-file')?.addEventListener('change',async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    S.parseMsg={ok:false,msg:'Procesando PDF...'}; render();
+    try{
+      const buf=await f.arrayBuffer();
+      const pdf=await window.pdfjsLib.getDocument({data:buf}).promise;
+      let txt='';
+      for(let i=1;i<=pdf.numPages;i++){
+        const pg=await pdf.getPage(i);
+        const ct=await pg.getTextContent();
+        txt+=ct.items.map(x=>x.str).join(' ')+'\n';
+      }
+      const parsed=parsePDFText(txt);
+      if(parsed&&parsed.length>0){
+        S.weeks=parsed;
+        S.parseMsg={ok:true,msg:`✓ ${parsed.length} semanas extraídas del PDF`};
+      } else {
+        S.weeks=JSON.parse(JSON.stringify(REAL_WEEKS));
+        S.parseMsg={ok:false,msg:'⚠ No se pudieron extraer semanas del PDF. Se cargaron datos de Mayo–Junio 2026.'};
+      }
+    }catch(err){
+      S.weeks=JSON.parse(JSON.stringify(REAL_WEEKS));
+      S.parseMsg={ok:false,msg:`Error: ${err.message}. Se cargaron datos de Mayo–Junio 2026.`};
+    }
+    render(); queueSyncSemanas();
+  });
+  const dz=document.getElementById('dz');
+  if(dz){
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+    dz.addEventListener('drop',e=>{
+      e.preventDefault();dz.classList.remove('drag');
+      const f=e.dataTransfer.files[0];
+      if(f){const fi=document.getElementById('pdf-file');const dt=new DataTransfer();dt.items.add(f);fi.files=dt.files;fi.dispatchEvent(new Event('change'));}
+    });
+  }
+  document.getElementById('pf-n')?.addEventListener('input',e=>S.pf.n=e.target.value);
+  document.getElementById('pf-g')?.addEventListener('change',e=>S.pf.g=e.target.value);
+  document.getElementById('pf-r')?.addEventListener('change',e=>S.pf.r=e.target.value);
+  document.getElementById('xlsx-btn')?.addEventListener('click',()=>document.getElementById('xlsx-file')?.click());
+  document.getElementById('xlsx-file')?.addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;importExcel(f);e.target.value='';});
+  document.querySelectorAll('.search-inp').forEach(inp=>{
+    inp.addEventListener('input',handleSearchInput);
+    inp.addEventListener('focus',handleSearchInput);
+    inp.addEventListener('blur',()=>setTimeout(()=>{const d=document.getElementById('drop-'+inp.id);if(d)d.style.display='none';},200));
+    inp.addEventListener('keydown',handleSearchKey);
+  });
+}
+
+function handleEv(e){
+  const el=e.currentTarget,a=el.dataset.a;
+  switch(a){
+    case 'tab': S.tab=parseInt(el.dataset.i); render(); break;
+    case 'filt': S.filterG=el.dataset.v; render(); break;
+    case 'saveP':{
+      const n=document.getElementById('pf-n')?.value.trim();
+      const g=document.getElementById('pf-g')?.value||S.pf.g;
+      const r=document.getElementById('pf-r')?.value||'';
+      if(!n) return;
+      if(S.editId){S.people=S.people.map(p=>p.id===S.editId?{...p,n,g,r}:p);S.editId=null;}
+      else S.people.push({id:++S.nextId,n,g,r});
+      S.pf={n:'',g:'M',r:''}; render(); queueSyncHermanos(); break;
+    }
+    case 'cancelP': S.editId=null; S.pf={n:'',g:'M',r:''}; render(); break;
+    case 'editP':{const p=S.people.find(x=>x.id===parseInt(el.dataset.id));if(p){S.editId=p.id;S.pf={n:p.n,g:p.g,r:p.r||''};render();} break;}
+    case 'delP':{
+      if(confirm('¿Eliminar este hermano/a?')){S.people=S.people.filter(p=>p.id!==parseInt(el.dataset.id));render();queueSyncHermanos();} break;
+    }
+    case 'loadReal':
+      S.weeks=JSON.parse(JSON.stringify(REAL_WEEKS));
+      S.parseMsg={ok:true,msg:'✓ 9 semanas cargadas: Mayo – Julio 2026'};
+      render(); queueSyncSemanas(); break;
+    case 'clearAll':
+      if(confirm('¿Borrar todos los datos de la nube y empezar de cero?')){
+        S.people=[];S.weeks=[];S.nextId=200;S.parseMsg=null;S.importMsg=null;
+        render(); syncHermanos(); syncSemanas();
+      } break;
+    case 'toggleW':{const id=parseInt(el.dataset.id);S.expanded[id]=!S.expanded[id];render();break;}
+    case 'setWk': S.activeWk=parseInt(el.dataset.i); render(); break;
+    case 'setTipo':{
+      const v=el.dataset.v;
+      S.weeks=S.weeks.map((wk,i)=>i===S.activeWk?{...wk,tipo:v}:wk);
+      render(); queueSyncSemanas(); break;
+    }
+    case 'togglePreview': S.showPreview=!S.showPreview; render(); break;
+    case 'print':{const pv=document.getElementById('print-view');pv.innerHTML=buildPrintHTML();pv.style.display='block';window.print();setTimeout(()=>{pv.style.display='none';},2000);break;}
+    case 'printSlips':{const pv=document.getElementById('print-view');pv.innerHTML=buildSlipsHTML();pv.style.display='block';window.print();setTimeout(()=>{pv.style.display='none';},2000);break;}
+  }
+}
+
+function handleSearchInput(e){
+  const inp=e.target,q=inp.value.toLowerCase().trim();
+  const drop=document.getElementById('drop-'+inp.id);
+  if(!drop) return;
+  const pool=getPoolForInput(inp.id);
+  const filtered=q?pool.filter(p=>p.n.toLowerCase().includes(q)):pool;
+  drop.innerHTML='<div class="search-opt clear" data-val="">— Sin asignar —</div>'+
+    filtered.map(p=>`<div class="search-opt" data-val="${p.id}">${p.g==='M'?'H':'M'} ${p.n}${p.r?' ('+p.r[0].toUpperCase()+p.r.slice(1)+')':''}</div>`).join('');
+  drop.style.display='block';
+  drop.querySelectorAll('.search-opt').forEach(opt=>{
+    opt.addEventListener('mousedown',ev=>{
+      ev.preventDefault();
+      const val=opt.dataset.val;
+      const hiddenId=inp.dataset.hidden;
+      const pool2=getPoolForInput(inp.id);
+      inp.value=val?pool2.find(p=>p.id===parseInt(val))?.n||'':'';
+      document.getElementById(hiddenId).value=val;
+      drop.style.display='none';
+      commitSearchValue(inp.id,hiddenId,val);
+    });
+  });
+}
+function handleSearchKey(e){
+  const inp=e.target,drop=document.getElementById('drop-'+inp.id);
+  if(!drop||drop.style.display==='none') return;
+  const opts=[...drop.querySelectorAll('.search-opt')];
+  const hi=drop.querySelector('.search-opt.hi');
+  let idx=hi?opts.indexOf(hi):-1;
+  if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,opts.length-1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);}
+  else if(e.key==='Enter'&&hi){hi.dispatchEvent(new Event('mousedown'));return;}
+  else if(e.key==='Escape'){drop.style.display='none';return;}
+  opts.forEach((o,i)=>o.classList.toggle('hi',i===idx));
+  if(opts[idx]) opts[idx].scrollIntoView({block:'nearest'});
+}
+function getPoolForInput(inputId){
+  if(inputId==='si-presidente') return S.people.filter(p=>RESTRICTED_ROLES.has(p.r));
+  if(inputId==='si-oracion') return S.people.filter(p=>p.g==='M');
+  if(inputId.startsWith('si-as-')){
+    const partId=inputId.replace('si-as-','');
+    const w=S.weeks[S.activeWk];if(!w) return S.people;
+    const part=w.parts.find(p=>String(p.id)===partId);
+    return part?getAssistPool(part.t):S.people;
+  }
+  const partId=inputId.replace('si-','');
+  const w=S.weeks[S.activeWk];if(!w) return S.people;
+  const part=w.parts.find(p=>String(p.id)===partId);
+  return part?getPool(part.id,part.s,part.t):S.people;
+}
+function commitSearchValue(inputId,hiddenId,val){
+  const numVal=val?parseInt(val):null;
+  if(inputId==='si-presidente'){S.weeks=S.weeks.map((wk,i)=>i===S.activeWk?{...wk,presidente:numVal}:wk);queueSyncSemanas();return;}
+  if(inputId==='si-oracion'){S.weeks=S.weeks.map((wk,i)=>i===S.activeWk?{...wk,oracion:numVal}:wk);queueSyncSemanas();return;}
+  const isAsst=inputId.startsWith('si-as-');
+  const partId=inputId.replace('si-as-','').replace('si-','');
+  const field=isAsst?'as':'at';
+  S.weeks=S.weeks.map((wk,i)=>i!==S.activeWk?wk:{...wk,parts:wk.parts.map(p=>String(p.id)!==partId?p:{...p,[field]:numVal})});
+  queueSyncSemanas();
+}
+
+// ═══════════════════════════════════════════
+// EXCEL IMPORTER
+// ═══════════════════════════════════════════
+function importExcel(file){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=new Uint8Array(e.target.result);
+      const wb=XLSX.read(data,{type:'array'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1});
+      let headerIdx=-1;
+      for(let i=0;i<rows.length;i++){if(rows[i]&&rows[i].some(c=>typeof c==='string'&&c.toLowerCase().includes('nombre'))){headerIdx=i;break;}}
+      if(headerIdx===-1){S.importMsg={ok:false,msg:'No se encontró fila de encabezado (Nombre) en el Excel.'};render();return;}
+      const hdr=rows[headerIdx].map(c=>c?String(c).toLowerCase().trim():'');
+      const colNombre=hdr.findIndex(c=>c.includes('nombre'));
+      const colTipo=hdr.findIndex(c=>c.includes('tipo'));
+      const colGenero=hdr.findIndex(c=>c.includes('genero')||c.includes('género')||c.includes('sexo'));
+      const TIPO_MAP={'anciano':'anciano','siervo ministerial':'siervo','siervo':'siervo','precursor':'precursor','pionero':'precursor','precursora':'precursor','pionera':'precursor'};
+      let added=0,skipped=0;
+      const existing=new Set(S.people.map(p=>p.n.toLowerCase().trim()));
+      for(let i=headerIdx+1;i<rows.length;i++){
+        const row=rows[i];
+        if(!row||!row[colNombre]) continue;
+        const nombre=String(row[colNombre]).trim();
+        if(!nombre||nombre.toLowerCase().includes('nombre')) continue;
+        if(existing.has(nombre.toLowerCase())){skipped++;continue;}
+        const tipoRaw=colTipo>=0&&row[colTipo]?String(row[colTipo]).toLowerCase().trim():'';
+        const tipo=TIPO_MAP[tipoRaw]||'';
+        let genero='M';
+        if(colGenero>=0&&row[colGenero]){const gv=String(row[colGenero]).trim().toUpperCase();if(gv==='H')genero='M';else if(gv==='M')genero='F';}
+        S.people.push({id:++S.nextId,n:nombre,g:genero,r:tipo});
+        existing.add(nombre.toLowerCase());
+        added++;
+      }
+      S.importMsg={ok:true,msg:`✓ ${added} hermano(s) importado(s)${skipped?` · ${skipped} ya existían`:''}.`};
+      render(); queueSyncHermanos();
+    }catch(err){S.importMsg={ok:false,msg:`Error al leer el Excel: ${err.message}`};render();}
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ═══════════════════════════════════════════
+// PDF PARSER
+// ═══════════════════════════════════════════
+function parsePDFText(raw){
+  const text=raw.replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim();
+  const MONTHS="ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SEPTIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE";
+  const WK_RX=new RegExp(`(\\d{1,2}\\s*[-–]\\s*\\d{1,2}\\s+DE\\s+(?:${MONTHS})|\\d{1,2}\\s+DE\\s+(?:${MONTHS})\\s+A\\s+\\d{1,2}\\s+DE\\s+(?:${MONTHS}))`,'gi');
+  const matches=[];let m;
+  while((m=WK_RX.exec(text))!==null) matches.push({pos:m.index,header:m[0].trim()});
+  if(matches.length===0) return null;
+  const weeks=[];
+  const SEC_RX={T:/TESOROS\s+DE\s+LA\s+BIBLIA/i,S:/SEAMOS\s+MEJORES\s+MAESTROS/i,C:/NUESTRA\s+VIDA\s+CRISTIANA/i};
+  const SONG_OPEN_RX=/Canci[oó]n\s+(\d+)\s+y\s+oraci[oó]n/i;
+  const SONG_CLOSE_RX=/Palabras\s+de\s+conclusi[oó]n[^|]*[|]\s*Canci[oó]n\s+(\d+)/i;
+  for(let i=0;i<matches.length;i++){
+    const start=matches[i].pos,end=i+1<matches.length?matches[i+1].pos:text.length;
+    const block=text.slice(start,end);
+    const oSong=block.match(SONG_OPEN_RX),cSong=block.match(SONG_CLOSE_RX);
+    const headerFull=block.slice(0,100);
+    const bookMatch=headerFull.match(/\|\s*([A-ZÁÉÍÓÚ][A-Za-záéíóúñÑ\s,]+\d[\d,\s-]*)/);
+    const secPositions=[];
+    for(const[k,rx]of Object.entries(SEC_RX)){const sm=rx.exec(block);if(sm)secPositions.push({sec:k,pos:sm.index});}
+    secPositions.sort((a,b)=>a.pos-b.pos);
+    const parts=[];
+    const pr=new RegExp(`(\\d{1,2})\\.\\s+([^(\\d][^(]{2,90}?)\\s*\\((\\d+)\\s*mins?\\.?\\)`,'gi');
+    let pm;
+    while((pm=pr.exec(block))!==null){
+      const partNum=parseInt(pm[1]),rawTitle=pm[2].trim().replace(/\s+/g,' '),partPos=pm.index;
+      let sec='T';
+      for(const sp of secPositions){if(sp.pos<partPos)sec=sp.sec;}
+      const isDiscurso=/discurso/i.test(rawTitle);
+      const needsAsst=sec==='S'&&!isDiscurso;
+      const isEstudio=/estudio\s+b[íi]blico/i.test(rawTitle);
+      parts.push({id:`${i+1}-${partNum}`,n:partNum,t:rawTitle,s:sec,d:pm[3]+' min.',asst:needsAsst||isEstudio,at:null,as:null});
+    }
+    if(parts.length===0) continue;
+    weeks.push({
+      id:i+1,
+      dateRange:matches[i].header.replace(/DE\s+/gi,'de ').replace(/MAYO/i,'mayo').replace(/JUNIO/i,'junio').replace(/JULIO/i,'julio').replace(/AGOSTO/i,'agosto').replace(/\s+/g,' ').toLowerCase().replace(/^\w/,c=>c.toUpperCase()),
+      reading:bookMatch?bookMatch[1].trim():'',
+      openSong:oSong?oSong[1]:'',closeSong:cSong?cSong[1]:'',
+      presidente:null,oracion:null,parts
+    });
+  }
+  return weeks.length>0?weeks:null;
+}
+
+// ═══════════════════════════════════════════
+// LIBRERÍAS EXTERNAS
+// ═══════════════════════════════════════════
+(function(){
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload=()=>{window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';S.pdfReady=true;render();};
+  s.onerror=()=>render();
+  document.head.appendChild(s);
+})();
+(function(){
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  s.onload=()=>{S.xlsxReady=true;render();};
+  s.onerror=()=>render();
+  document.head.appendChild(s);
+})();
+
+// ═══════════════════════════════════════════
+// INICIO — carga desde Supabase
+// ═══════════════════════════════════════════
+render();
+loadFromSupabase();
+</script>
+</body>
+</html>
