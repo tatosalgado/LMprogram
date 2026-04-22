@@ -78,6 +78,15 @@ input[type=text]:focus,select:focus{border-color:#0d9488;box-shadow:0 0 0 2px rg
 .search-opt{padding:6px 10px;font-size:11px;cursor:pointer;border-bottom:0.5px solid #f3f4f6}
 .search-opt:hover,.search-opt.hi{background:#f0fdf4}
 .search-opt.clear{color:#dc2626;font-style:italic}
+/* ── Modal boleta ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-box{background:#fff;border-radius:14px;padding:18px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-title{font-size:14px;font-weight:600;margin-bottom:12px;color:#111}
+.modal-canvas-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:12px;text-align:center;background:#f9fafb}
+.modal-canvas-wrap canvas{max-width:100%;display:block;margin:0 auto}
+.sala-btns{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.sala-btn{flex:1;padding:5px 8px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;cursor:pointer;text-align:center}
+.sala-btn.on{background:#073a7a;color:#fff;border-color:#073a7a;font-weight:600}
 </style>
 </head>
 <body>
@@ -283,6 +292,7 @@ let S={
   tab:0, people:[], weeks:[], pdfReady:false, xlsxReady:false,
   activeWk:0, pf:{n:'',g:'M',r:''}, editId:null, filterG:'all',
   expanded:{}, showPreview:false, parseMsg:null, importMsg:null, nextId:200,
+  boletaModal:null,
 };
 
 function render(){ document.getElementById('app').innerHTML=buildApp(); bind(); }
@@ -521,7 +531,7 @@ function buildAssignments(){
         <div class="part-num" style="color:${sec.color}">${p.n}</div>
         <div class="part-info">
           <div class="part-title">${p.t}${p._viajante?' <span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:4px">Viajante</span>':''}</div>
-          <div class="part-sub">${p.d}</div>
+          <div class="part-sub">${p.d}${isStudentPart(p)?` · <button class="btn sm no-print" data-a="boleta" data-wk="${activeWk}" data-part="${p.id}" style="padding:2px 6px;font-size:10px;color:#073a7a;border-color:#93c5fd;background:#eff6ff">📋 Boleta</button>`:''}</div>
         </div>
         <div class="part-assign" style="min-width:185px">
           ${buildSearchSelect('si-'+p.id,'hv-'+p.id,pool,p.at,placeholder)}
@@ -794,8 +804,147 @@ function buildSlipsHTML(){
 }
 
 // ═══════════════════════════════════════════
-// APP PRINCIPAL
+// BOLETA S-89 — IMAGEN PARA WHATSAPP
 // ═══════════════════════════════════════════
+function isStudentPart(p){
+  return p.s==='S' || /lectura de la biblia/i.test(p.t);
+}
+
+function generateBoletaCanvas(data){
+  // data: { nombre, ayudante, fecha, titulo, intervencion, sala }
+  const scale=2, W=420, H=310;
+  const c=document.createElement('canvas');
+  c.width=W*scale; c.height=H*scale;
+  const ctx=c.getContext('2d');
+  ctx.scale(scale,scale);
+  const BLUE='#073a7a', LBLUE='#b8d0f0', GRAY='#555', LINE='#d1d5db';
+  // Fondo blanco
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  // Borde exterior
+  ctx.strokeStyle='#334155'; ctx.lineWidth=1.5; ctx.strokeRect(3,3,W-6,H-6);
+  // Encabezado azul
+  ctx.fillStyle=BLUE; ctx.fillRect(3,3,W-6,56);
+  // Barra lateral izquierda
+  ctx.fillStyle='#0a4fa0'; ctx.fillRect(3,3,16,H-6);
+  // Texto vertical barra
+  ctx.save();
+  ctx.fillStyle='#fff'; ctx.font='bold 7px Arial';
+  ctx.textAlign='center';
+  ctx.translate(11, H/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText('REUNIÓN VIDA Y MINISTERIO CRISTIANOS', 0, 0);
+  ctx.restore();
+  // Título
+  ctx.fillStyle='#fff'; ctx.textAlign='center';
+  ctx.font='bold 10px Arial';
+  ctx.fillText('ASIGNACIÓN PARA LA REUNIÓN', W/2+8, 22);
+  ctx.font='bold 12.5px Arial';
+  ctx.fillText('VIDA Y MINISTERIO CRISTIANOS', W/2+8, 40);
+  ctx.font='8px Arial'; ctx.fillStyle=LBLUE;
+  ctx.fillText('Congregación Nueva Valencia', W/2+8, 54);
+  // ── Campos ──
+  const lx=26, rx=W-14, fieldW=rx-lx;
+  let y=78;
+  const lh=30;
+  function drawField(label, value, x1, x2, yy){
+    ctx.fillStyle=GRAY; ctx.font='7.5px Arial'; ctx.textAlign='left';
+    ctx.fillText(label, x1, yy-10);
+    ctx.strokeStyle=LINE; ctx.lineWidth=0.6;
+    ctx.beginPath(); ctx.moveTo(x1,yy); ctx.lineTo(x2,yy); ctx.stroke();
+    if(value){
+      ctx.fillStyle='#0f172a'; ctx.font='bold 10px Arial';
+      ctx.fillText(value, x1, yy-1);
+    }
+  }
+  // Nombre (ancho completo)
+  drawField('Nombre:', data.nombre||'', lx, rx, y); y+=lh;
+  // Ayudante (ancho completo)
+  drawField('Ayudante:', data.ayudante||'', lx, rx, y); y+=lh;
+  // Fecha + Intervención num (mitad/mitad)
+  const mid=lx+fieldW*0.52;
+  drawField('Fecha:', data.fecha||'', lx, mid-8, y);
+  drawField('Intervención núm.:', data.intervencion||'', mid+4, rx, y);
+  y+=lh;
+  // Intervención (título)
+  drawField('Intervención:', data.titulo||'', lx, rx, y); y+=lh;
+  // Se presentará en:
+  ctx.fillStyle=GRAY; ctx.font='7.5px Arial'; ctx.textAlign='left';
+  ctx.fillText('Se presentará en:', lx, y);
+  y+=16;
+  // Checkboxes salas
+  const salas=[['principal','Sala principal'],['aux1','Sala auxiliar núm. 1'],['aux2','Sala auxiliar núm. 2']];
+  const slotW=(rx-lx)/3;
+  salas.forEach(([key,label],i)=>{
+    const cx=lx+i*slotW;
+    const checked=data.sala===key;
+    ctx.strokeStyle=checked?BLUE:'#64748b'; ctx.lineWidth=0.8;
+    ctx.strokeRect(cx,y-9,9,9);
+    if(checked){ctx.fillStyle=BLUE;ctx.fillRect(cx+1.5,y-7.5,6,6);}
+    ctx.fillStyle=checked?BLUE:'#334155'; ctx.font=checked?'bold 8px Arial':'8px Arial';
+    ctx.fillText(label,cx+13,y-1);
+  });
+  y+=16;
+  // Línea separadora
+  ctx.strokeStyle=LINE; ctx.lineWidth=0.5;
+  ctx.beginPath(); ctx.moveTo(lx,y); ctx.lineTo(rx,y); ctx.stroke();
+  y+=10;
+  // Nota al estudiante
+  ctx.fillStyle='#64748b'; ctx.font='6.5px Arial'; ctx.textAlign='left';
+  ctx.fillText('Nota al estudiante: En la Guía de actividades encontrará la información que necesita para su',lx,y); y+=10;
+  ctx.fillText('intervención. Repase también las indicaciones del formulario S-38.',lx,y); y+=14;
+  // Footer
+  ctx.fillStyle='#cbd5e1'; ctx.font='6px Arial'; ctx.textAlign='right';
+  ctx.fillText('S-89-S',rx,y);
+  return c;
+}
+
+function renderBoletaModal(){
+  const {boletaModal}=S;
+  if(!boletaModal) return '';
+  const {weekIdx,partId,sala}=boletaModal;
+  const w=S.weeks[weekIdx];
+  const p=w?.parts.find(x=>String(x.id)===String(partId));
+  if(!w||!p) return '';
+  const person=p.at?S.people.find(x=>x.id===p.at):null;
+  const asst=p.as?S.people.find(x=>x.id===p.as):null;
+  const salaLabels={principal:'Sala principal',aux1:'Sala aux. 1',aux2:'Sala aux. 2'};
+  return `<div class="modal-overlay" data-a="closeBoleta">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-title">📋 Boleta de asignación</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:10px">${p.t} · Semana del ${w.dateRange}</div>
+      <div class="sala-btns">
+        ${Object.entries(salaLabels).map(([k,l])=>`<button class="sala-btn ${sala===k?'on':''}" data-a="setSala" data-v="${k}">${l}</button>`).join('')}
+      </div>
+      <div class="modal-canvas-wrap" id="boleta-canvas-wrap"></div>
+      <div class="btn-row" style="justify-content:flex-end">
+        <button class="btn" data-a="closeBoleta">Cerrar</button>
+        <button class="btn p" data-a="downloadBoleta">⬇ Descargar imagen</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function paintBoleta(){
+  const {boletaModal}=S;
+  if(!boletaModal) return;
+  const {weekIdx,partId,sala}=boletaModal;
+  const w=S.weeks[weekIdx]; if(!w) return;
+  const p=w.parts.find(x=>String(x.id)===String(partId)); if(!p) return;
+  const person=p.at?S.people.find(x=>x.id===p.at):null;
+  const asst=p.as?S.people.find(x=>x.id===p.as):null;
+  const canvas=generateBoletaCanvas({
+    nombre:person?person.n:'(sin asignar)',
+    ayudante:asst?asst.n:'',
+    fecha:w.dateRange,
+    titulo:p.t,
+    intervencion:String(p.n),
+    sala:sala||'principal'
+  });
+  const wrap=document.getElementById('boleta-canvas-wrap');
+  if(wrap){wrap.innerHTML='';wrap.appendChild(canvas);}
+}
+
+
 function buildApp(){
   const {tab,people,weeks}=S;
   const totMiss=weeks.reduce((s,w)=>s+w.parts.filter(p=>!p.at).length,0);
@@ -820,7 +969,8 @@ function buildApp(){
       </div>
       <div class="tabs">${tabHtml}</div>
     </div>
-    <div class="body">${content}</div>`;
+    <div class="body">${content}</div>
+    ${renderBoletaModal()}`;
 }
 
 // ═══════════════════════════════════════════
@@ -918,6 +1068,32 @@ function handleEv(e){
     case 'togglePreview': S.showPreview=!S.showPreview; render(); break;
     case 'print':{const pv=document.getElementById('print-view');pv.innerHTML=buildPrintHTML();pv.style.display='block';window.print();setTimeout(()=>{pv.style.display='none';},2000);break;}
     case 'printSlips':{const pv=document.getElementById('print-view');pv.innerHTML=buildSlipsHTML();pv.style.display='block';window.print();setTimeout(()=>{pv.style.display='none';},2000);break;}
+    case 'boleta':{
+      S.boletaModal={weekIdx:parseInt(el.dataset.wk),partId:el.dataset.part,sala:'principal'};
+      render();
+      setTimeout(paintBoleta,0);
+      break;
+    }
+    case 'closeBoleta': S.boletaModal=null; render(); break;
+    case 'setSala':{
+      if(S.boletaModal){S.boletaModal={...S.boletaModal,sala:el.dataset.v};render();setTimeout(paintBoleta,0);}
+      break;
+    }
+    case 'downloadBoleta':{
+      const wrap=document.getElementById('boleta-canvas-wrap');
+      const canvas=wrap?.querySelector('canvas');
+      if(!canvas) return;
+      const {weekIdx,partId}=S.boletaModal;
+      const w=S.weeks[weekIdx];
+      const p=w?.parts.find(x=>String(x.id)===String(partId));
+      const person=p?.at?S.people.find(x=>x.id===p.at):null;
+      const nombre=person?person.n.replace(/\s+/g,'_'):'boleta';
+      const a=document.createElement('a');
+      a.href=canvas.toDataURL('image/png');
+      a.download=`boleta_${nombre}_${(w?.dateRange||'').replace(/\s+/g,'_')}.png`;
+      a.click();
+      break;
+    }
   }
 }
 
