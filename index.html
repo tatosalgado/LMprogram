@@ -78,10 +78,9 @@ input[type=text]:focus,select:focus{border-color:#0d9488;box-shadow:0 0 0 2px rg
 .search-opt{padding:6px 10px;font-size:11px;cursor:pointer;border-bottom:0.5px solid #f3f4f6}
 .search-opt:hover,.search-opt.hi{background:#f0fdf4}
 .search-opt.clear{color:#dc2626;font-style:italic}
-/* ── Modal boleta ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
-.modal-box{background:#fff;border-radius:14px;padding:18px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.modal-title{font-size:14px;font-weight:600;margin-bottom:12px;color:#111}
+.modal-box{background:#fff;border-radius:14px;padding:18px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:14px;font-weight:600;margin-bottom:8px;color:#111}
 .modal-canvas-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:12px;text-align:center;background:#f9fafb}
 .modal-canvas-wrap canvas{max-width:100%;display:block;margin:0 auto}
 .sala-btns{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
@@ -277,6 +276,98 @@ const REAL_WEEKS = [
   {id:"9g",n:7,t:"Necesidades de la congregación",s:"C",d:"15 min.",asst:false,at:null,as:null},
   {id:"9h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
 ]},
+// ── Julio – Agosto 2026 ──
+{id:10,dateRange:"6–12 de julio",reading:"Jeremías 13-15",openSong:"123",closeSong:"61",middleSong:"49",presidente:null,oracion:null,parts:[
+  {id:"10a",n:1,t:"Jehová merece que le obedezcamos",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"10b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"10c",n:3,t:"Lectura de la Biblia: Jer 13:1-14",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"10d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"10e",n:5,t:"Haga revisitas (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"10f",n:6,t:"Discurso",s:"S",d:"5 min.",asst:false,at:null,as:null},
+  {id:"10g",n:7,t:'"Obedecer es mejor que ofrecer un sacrificio"',s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"10h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:11,dateRange:"13–19 de julio",reading:"Jeremías 16, 17",openSong:"34",closeSong:"22",middleSong:"54",presidente:null,oracion:null,parts:[
+  {id:"11a",n:1,t:"¿Estamos confiando en la persona correcta?",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"11b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"11c",n:3,t:"Lectura de la Biblia: Jer 17:5-18",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"11d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"11e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"11f",n:6,t:"Haga discípulos",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"11g",n:7,t:"Joven, confía en los consejos de la Biblia",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"11h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:12,dateRange:"20–26 de julio",reading:"Jeremías 18, 19",openSong:"44",closeSong:"153",middleSong:"38",presidente:null,oracion:null,parts:[
+  {id:"12a",n:1,t:"Recuperarnos en sentido espiritual es posible",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"12b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"12c",n:3,t:"Lectura de la Biblia: Jer 19:1-11",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"12d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"12e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"12f",n:6,t:"Explique sus creencias: ¿Qué dice la Biblia sobre el libre albedrío?",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"12g",n:7,t:"Pasos para recuperarnos en sentido espiritual",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"12h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:13,dateRange:"27 jul – 2 de agosto",reading:"Jeremías 20, 21",openSong:"73",closeSong:"31",middleSong:"57",presidente:null,oracion:null,parts:[
+  {id:"13a",n:1,t:"Predicó con valor",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"13b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"13c",n:3,t:"Lectura de la Biblia: Jer 20:7-18",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"13d",n:4,t:"Empiece conversaciones (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"13e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"13f",n:6,t:"Explique sus creencias",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"13g",n:7,t:"Seamos adaptables y mostremos interés por las personas",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"13h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:14,dateRange:"3–9 de agosto",reading:"Jeremías 22, 23",openSong:"40",closeSong:"60",middleSong:"103",presidente:null,oracion:null,parts:[
+  {id:"14a",n:1,t:"¡Qué importante es tener buenos pastores!",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"14b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"14c",n:3,t:"Lectura de la Biblia: Jer 23:25-36",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"14d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"14e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"14f",n:6,t:"Discurso: Jesús es el Hijo de Dios",s:"S",d:"4 min.",asst:false,at:null,as:null},
+  {id:"14g",n:7,t:"Del pasado al presente: El Cuerpo Gobernante promueve la unidad (parte 1)",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"14h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:15,dateRange:"10–16 de agosto",reading:"Jeremías 24, 25",openSong:"124",closeSong:"137",middleSong:"65",presidente:null,oracion:null,parts:[
+  {id:"15a",n:1,t:'¿Qué hace que los "higos" sean buenos o malos?',s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"15b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"15c",n:3,t:"Lectura de la Biblia: Jer 24:1-10",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"15d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"15e",n:5,t:"Haga revisitas (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"15f",n:6,t:"Haga discípulos",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"15g",n:7,t:"Necesidades de la congregación",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"15h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:16,dateRange:"17–23 de agosto",reading:"Jeremías 26-28",openSong:"77",closeSong:"71",middleSong:"16",presidente:null,oracion:null,parts:[
+  {id:"16a",n:1,t:"No se deje engañar por los falsos profetas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"16b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"16c",n:3,t:"Lectura de la Biblia: Jer 28:5-17",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"16d",n:4,t:"Empiece conversaciones (predicación pública)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"16e",n:5,t:"Haga revisitas (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"16f",n:6,t:"Haga discípulos",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"16g",n:7,t:"Necesidades de la congregación",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"16h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:17,dateRange:"24–30 de agosto",reading:"Jeremías 29, 30",openSong:"12",closeSong:"156",middleSong:"3",presidente:null,oracion:null,parts:[
+  {id:"17a",n:1,t:"Jehová disciplina a sus siervos hasta el grado debido",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"17b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"17c",n:3,t:"Lectura de la Biblia: Jer 30:1-11",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"17d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"17e",n:5,t:"Empiece conversaciones (predicación pública)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"17f",n:6,t:"Discurso: ¿Qué significa Jeremías 29:11?",s:"S",d:"5 min.",asst:false,at:null,as:null},
+  {id:"17g",n:7,t:"Jehová llena de esperanza a sus siervos",s:"C",d:"10 min.",asst:false,at:null,as:null},
+  {id:"17h",n:8,t:"Campaña especial en septiembre",s:"C",d:"5 min.",asst:false,at:null,as:null},
+  {id:"17i",n:9,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
+{id:18,dateRange:"31 ago – 6 de septiembre",reading:"Jeremías 31",openSong:"27",closeSong:"132",middleSong:"67",presidente:null,oracion:null,parts:[
+  {id:"18a",n:1,t:'"Haré un nuevo pacto"',s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"18b",n:2,t:"Busquemos perlas escondidas",s:"T",d:"10 min.",asst:false,at:null,as:null},
+  {id:"18c",n:3,t:"Lectura de la Biblia: Jer 31:1-11",s:"T",d:"4 min.",asst:false,at:null,as:null},
+  {id:"18d",n:4,t:"Empiece conversaciones (de casa en casa)",s:"S",d:"3 min.",asst:true,at:null,as:null},
+  {id:"18e",n:5,t:"Empiece conversaciones (predicación informal)",s:"S",d:"4 min.",asst:true,at:null,as:null},
+  {id:"18f",n:6,t:"Explique sus creencias: ¿Por qué no se involucran los testigos de Jehová en asuntos políticos?",s:"S",d:"5 min.",asst:true,at:null,as:null},
+  {id:"18g",n:7,t:"Seamos adaptables y usemos JW.ORG",s:"C",d:"15 min.",asst:false,at:null,as:null},
+  {id:"18h",n:8,t:"Estudio bíblico de la congregación",s:"C",d:"30 min.",asst:true,at:null,as:null},
+]},
 ];
 
 const SECS={
@@ -395,8 +486,8 @@ function buildProgram(){
   return `
     <div class="card muted" style="margin-bottom:10px">
       <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px">CARGAR DATOS PRECARGADOS</div>
-      <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Carga las 9 semanas de Mayo – Julio 2026 ya incluidas en la app.</div>
-      <button class="btn p" data-a="loadReal">${I.ok()} Cargar Mayo–Junio 2026</button>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Carga las 18 semanas de Mayo – Septiembre 2026 ya incluidas en la app.</div>
+      <button class="btn p" data-a="loadReal">${I.ok()} Cargar Mayo–Septiembre 2026</button>
     </div>
     <div class="card muted" style="margin-bottom:10px">
       <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px">IMPORTAR DESDE PDF</div>
@@ -531,7 +622,7 @@ function buildAssignments(){
         <div class="part-num" style="color:${sec.color}">${p.n}</div>
         <div class="part-info">
           <div class="part-title">${p.t}${p._viajante?' <span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:4px">Viajante</span>':''}</div>
-          <div class="part-sub">${p.d}${isStudentPart(p)?` · <button class="btn sm no-print" data-a="boleta" data-wk="${activeWk}" data-part="${p.id}" style="padding:2px 6px;font-size:10px;color:#073a7a;border-color:#93c5fd;background:#eff6ff">📋 Boleta</button>`:''}</div>
+          <div class="part-sub">${p.d}</div>
         </div>
         <div class="part-assign" style="min-width:185px">
           ${buildSearchSelect('si-'+p.id,'hv-'+p.id,pool,p.at,placeholder)}
@@ -811,90 +902,114 @@ function isStudentPart(p){
 }
 
 function generateBoletaCanvas(data){
-  // data: { nombre, ayudante, fecha, titulo, intervencion, sala }
-  const scale=2, W=420, H=310;
+  // Réplica fiel del formulario S-89-S oficial
+  const scale=3, W=360, H=310;
   const c=document.createElement('canvas');
   c.width=W*scale; c.height=H*scale;
   const ctx=c.getContext('2d');
   ctx.scale(scale,scale);
-  const BLUE='#073a7a', LBLUE='#b8d0f0', GRAY='#555', LINE='#d1d5db';
-  // Fondo blanco
+  const BK='#000', GY='#333', SGY='#555';
+  const pad=18;
+
+  // Fondo blanco + bordes dobles (estilo S-89)
   ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
-  // Borde exterior
-  ctx.strokeStyle='#334155'; ctx.lineWidth=1.5; ctx.strokeRect(3,3,W-6,H-6);
-  // Encabezado azul
-  ctx.fillStyle=BLUE; ctx.fillRect(3,3,W-6,56);
-  // Barra lateral izquierda
-  ctx.fillStyle='#0a4fa0'; ctx.fillRect(3,3,16,H-6);
-  // Texto vertical barra
-  ctx.save();
-  ctx.fillStyle='#fff'; ctx.font='bold 7px Arial';
-  ctx.textAlign='center';
-  ctx.translate(11, H/2);
-  ctx.rotate(-Math.PI/2);
-  ctx.fillText('REUNIÓN VIDA Y MINISTERIO CRISTIANOS', 0, 0);
-  ctx.restore();
-  // Título
-  ctx.fillStyle='#fff'; ctx.textAlign='center';
-  ctx.font='bold 10px Arial';
-  ctx.fillText('ASIGNACIÓN PARA LA REUNIÓN', W/2+8, 22);
-  ctx.font='bold 12.5px Arial';
-  ctx.fillText('VIDA Y MINISTERIO CRISTIANOS', W/2+8, 40);
-  ctx.font='8px Arial'; ctx.fillStyle=LBLUE;
-  ctx.fillText('Congregación Nueva Valencia', W/2+8, 54);
-  // ── Campos ──
-  const lx=26, rx=W-14, fieldW=rx-lx;
-  let y=78;
-  const lh=30;
-  function drawField(label, value, x1, x2, yy){
-    ctx.fillStyle=GRAY; ctx.font='7.5px Arial'; ctx.textAlign='left';
-    ctx.fillText(label, x1, yy-10);
-    ctx.strokeStyle=LINE; ctx.lineWidth=0.6;
-    ctx.beginPath(); ctx.moveTo(x1,yy); ctx.lineTo(x2,yy); ctx.stroke();
+  ctx.strokeStyle=BK; ctx.lineWidth=2.0; ctx.strokeRect(2,2,W-4,H-4);
+  ctx.strokeStyle=BK; ctx.lineWidth=0.4; ctx.strokeRect(5,5,W-10,H-10);
+
+  let y=pad+12;
+  const lx=pad+2, rx=W-pad-2;
+
+  // ── ENCABEZADO ──
+  ctx.fillStyle=BK; ctx.textAlign='center';
+  ctx.font='bold 8.5px Arial';
+  ctx.fillText('ASIGNACIÓN PARA LA REUNIÓN', W/2, y); y+=13;
+  ctx.font='bold 12px Arial';
+  ctx.fillText('VIDA Y MINISTERIO CRISTIANOS', W/2, y); y+=8;
+  // Línea gruesa bajo el título
+  ctx.strokeStyle=BK; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.moveTo(lx,y); ctx.lineTo(rx,y); ctx.stroke();
+  y+=16;
+
+  // ── FUNCIÓN CAMPO ──
+  function campo(label, value, x1, x2, yy, negrita){
+    ctx.fillStyle=SGY; ctx.font='7.5px Arial'; ctx.textAlign='left';
+    ctx.fillText(label, x1, yy);
+    // Línea base del campo
+    ctx.strokeStyle=BK; ctx.lineWidth=0.5;
+    ctx.beginPath(); ctx.moveTo(x1,yy+14); ctx.lineTo(x2,yy+14); ctx.stroke();
+    // Valor escrito
     if(value){
-      ctx.fillStyle='#0f172a'; ctx.font='bold 10px Arial';
-      ctx.fillText(value, x1, yy-1);
+      ctx.fillStyle=BK;
+      ctx.font= negrita ? 'bold 10.5px Arial' : '10px Arial';
+      ctx.fillText(value, x1+1, yy+12);
     }
+    return yy+26;
   }
-  // Nombre (ancho completo)
-  drawField('Nombre:', data.nombre||'', lx, rx, y); y+=lh;
-  // Ayudante (ancho completo)
-  drawField('Ayudante:', data.ayudante||'', lx, rx, y); y+=lh;
-  // Fecha + Intervención num (mitad/mitad)
-  const mid=lx+fieldW*0.52;
-  drawField('Fecha:', data.fecha||'', lx, mid-8, y);
-  drawField('Intervención núm.:', data.intervencion||'', mid+4, rx, y);
-  y+=lh;
-  // Intervención (título)
-  drawField('Intervención:', data.titulo||'', lx, rx, y); y+=lh;
-  // Se presentará en:
-  ctx.fillStyle=GRAY; ctx.font='7.5px Arial'; ctx.textAlign='left';
-  ctx.fillText('Se presentará en:', lx, y);
-  y+=16;
-  // Checkboxes salas
-  const salas=[['principal','Sala principal'],['aux1','Sala auxiliar núm. 1'],['aux2','Sala auxiliar núm. 2']];
-  const slotW=(rx-lx)/3;
-  salas.forEach(([key,label],i)=>{
-    const cx=lx+i*slotW;
+
+  // Nombre
+  y = campo('Nombre:', data.nombre||'', lx, rx, y, true);
+  // Ayudante
+  y = campo('Ayudante:', data.ayudante||'', lx, rx, y, false);
+  // Fecha  |  Intervención núm.
+  const half = lx + (rx-lx)*0.48;
+  const ySnap=y;
+  campo('Fecha:', data.fecha||'', lx, half-4, ySnap, false);
+  campo('Intervención núm.:', data.intervencion||'', half+6, rx, ySnap, false);
+  y = ySnap + 26;
+
+  y+=4;
+
+  // ── SE PRESENTARÁ EN ──
+  ctx.fillStyle=SGY; ctx.font='7.5px Arial'; ctx.textAlign='left';
+  ctx.fillText('Se presentará en:', lx, y); y+=14;
+
+  const salas=[
+    ['principal','Sala principal'],
+    ['aux1','Sala auxiliar núm. 1'],
+    ['aux2','Sala auxiliar núm. 2']
+  ];
+  salas.forEach(([key,label])=>{
     const checked=data.sala===key;
-    ctx.strokeStyle=checked?BLUE:'#64748b'; ctx.lineWidth=0.8;
-    ctx.strokeRect(cx,y-9,9,9);
-    if(checked){ctx.fillStyle=BLUE;ctx.fillRect(cx+1.5,y-7.5,6,6);}
-    ctx.fillStyle=checked?BLUE:'#334155'; ctx.font=checked?'bold 8px Arial':'8px Arial';
-    ctx.fillText(label,cx+13,y-1);
+    // Checkbox cuadrado
+    ctx.strokeStyle=BK; ctx.lineWidth=0.7;
+    ctx.strokeRect(lx, y-10, 10, 10);
+    if(checked){
+      // Tilde de verificación
+      ctx.strokeStyle=BK; ctx.lineWidth=1.5;
+      ctx.beginPath();
+      ctx.moveTo(lx+1.5, y-5.5);
+      ctx.lineTo(lx+4,   y-2.5);
+      ctx.lineTo(lx+9,   y-9);
+      ctx.stroke();
+    }
+    ctx.fillStyle=BK;
+    ctx.font= checked ? 'bold 9px Arial' : '9px Arial';
+    ctx.fillText(label, lx+15, y-1);
+    y+=17;
   });
-  y+=16;
-  // Línea separadora
-  ctx.strokeStyle=LINE; ctx.lineWidth=0.5;
+
+  y+=4;
+  // Línea separadora fina
+  ctx.strokeStyle='#bbb'; ctx.lineWidth=0.4;
   ctx.beginPath(); ctx.moveTo(lx,y); ctx.lineTo(rx,y); ctx.stroke();
   y+=10;
-  // Nota al estudiante
-  ctx.fillStyle='#64748b'; ctx.font='6.5px Arial'; ctx.textAlign='left';
-  ctx.fillText('Nota al estudiante: En la Guía de actividades encontrará la información que necesita para su',lx,y); y+=10;
-  ctx.fillText('intervención. Repase también las indicaciones del formulario S-38.',lx,y); y+=14;
-  // Footer
-  ctx.fillStyle='#cbd5e1'; ctx.font='6px Arial'; ctx.textAlign='right';
-  ctx.fillText('S-89-S',rx,y);
+
+  // ── NOTA AL ESTUDIANTE ──
+  ctx.fillStyle='#555'; ctx.font='6.8px Arial'; ctx.textAlign='left';
+  const nota='Nota al estudiante: En la Guía de actividades encontrará la información que necesita para su intervención. Repase también las indicaciones que se describen en las Instrucciones para la reunión Vida y Ministerio Cristianos (S-38).';
+  const wds=nota.split(' '), maxW=rx-lx; let ln='';
+  wds.forEach(wd=>{
+    const test=ln ? ln+' '+wd : wd;
+    if(ctx.measureText(test).width > maxW){ ctx.fillText(ln,lx,y); y+=9; ln=wd; }
+    else ln=test;
+  });
+  if(ln){ ctx.fillText(ln,lx,y); y+=9; }
+
+  // Código S-89
+  y+=5;
+  ctx.fillStyle='#aaa'; ctx.font='6.5px Arial'; ctx.textAlign='right';
+  ctx.fillText('S-89-S  11/23', rx, y);
+
   return c;
 }
 
@@ -905,28 +1020,25 @@ function renderBoletaModal(){
   const w=S.weeks[weekIdx];
   const p=w?.parts.find(x=>String(x.id)===String(partId));
   if(!w||!p) return '';
-  const person=p.at?S.people.find(x=>x.id===p.at):null;
-  const asst=p.as?S.people.find(x=>x.id===p.as):null;
   const salaLabels={principal:'Sala principal',aux1:'Sala aux. 1',aux2:'Sala aux. 2'};
   return `<div class="modal-overlay" data-a="closeBoleta">
     <div class="modal-box" onclick="event.stopPropagation()">
       <div class="modal-title">📋 Boleta de asignación</div>
-      <div style="font-size:12px;color:#6b7280;margin-bottom:10px">${p.t} · Semana del ${w.dateRange}</div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:10px">${p.t} · ${w.dateRange}</div>
       <div class="sala-btns">
         ${Object.entries(salaLabels).map(([k,l])=>`<button class="sala-btn ${sala===k?'on':''}" data-a="setSala" data-v="${k}">${l}</button>`).join('')}
       </div>
       <div class="modal-canvas-wrap" id="boleta-canvas-wrap"></div>
-      <div class="btn-row" style="justify-content:flex-end">
+      <div class="btn-row" style="justify-content:flex-end;margin-top:8px">
         <button class="btn" data-a="closeBoleta">Cerrar</button>
-        <button class="btn p" data-a="downloadBoleta">⬇ Descargar imagen</button>
+        <button class="btn p" data-a="downloadBoleta">⬇ Descargar para WhatsApp</button>
       </div>
     </div>
   </div>`;
 }
 
 function paintBoleta(){
-  const {boletaModal}=S;
-  if(!boletaModal) return;
+  const {boletaModal}=S; if(!boletaModal) return;
   const {weekIdx,partId,sala}=boletaModal;
   const w=S.weeks[weekIdx]; if(!w) return;
   const p=w.parts.find(x=>String(x.id)===String(partId)); if(!p) return;
@@ -944,7 +1056,9 @@ function paintBoleta(){
   if(wrap){wrap.innerHTML='';wrap.appendChild(canvas);}
 }
 
-
+// ═══════════════════════════════════════════
+// APP PRINCIPAL
+// ═══════════════════════════════════════════
 function buildApp(){
   const {tab,people,weeks}=S;
   const totMiss=weeks.reduce((s,w)=>s+w.parts.filter(p=>!p.at).length,0);
@@ -969,8 +1083,7 @@ function buildApp(){
       </div>
       <div class="tabs">${tabHtml}</div>
     </div>
-    <div class="body">${content}</div>
-    ${renderBoletaModal()}`;
+    <div class="body">${content}</div>`;
 }
 
 // ═══════════════════════════════════════════
@@ -1051,7 +1164,7 @@ function handleEv(e){
     }
     case 'loadReal':
       S.weeks=JSON.parse(JSON.stringify(REAL_WEEKS));
-      S.parseMsg={ok:true,msg:'✓ 9 semanas cargadas: Mayo – Julio 2026'};
+      S.parseMsg={ok:true,msg:'✓ 18 semanas cargadas: Mayo – Septiembre 2026'};
       render(); queueSyncSemanas(); break;
     case 'clearAll':
       if(confirm('¿Borrar todos los datos de la nube y empezar de cero?')){
@@ -1068,32 +1181,6 @@ function handleEv(e){
     case 'togglePreview': S.showPreview=!S.showPreview; render(); break;
     case 'print':{const pv=document.getElementById('print-view');pv.innerHTML=buildPrintHTML();pv.style.display='block';window.print();setTimeout(()=>{pv.style.display='none';},2000);break;}
     case 'printSlips':{const pv=document.getElementById('print-view');pv.innerHTML=buildSlipsHTML();pv.style.display='block';window.print();setTimeout(()=>{pv.style.display='none';},2000);break;}
-    case 'boleta':{
-      S.boletaModal={weekIdx:parseInt(el.dataset.wk),partId:el.dataset.part,sala:'principal'};
-      render();
-      setTimeout(paintBoleta,0);
-      break;
-    }
-    case 'closeBoleta': S.boletaModal=null; render(); break;
-    case 'setSala':{
-      if(S.boletaModal){S.boletaModal={...S.boletaModal,sala:el.dataset.v};render();setTimeout(paintBoleta,0);}
-      break;
-    }
-    case 'downloadBoleta':{
-      const wrap=document.getElementById('boleta-canvas-wrap');
-      const canvas=wrap?.querySelector('canvas');
-      if(!canvas) return;
-      const {weekIdx,partId}=S.boletaModal;
-      const w=S.weeks[weekIdx];
-      const p=w?.parts.find(x=>String(x.id)===String(partId));
-      const person=p?.at?S.people.find(x=>x.id===p.at):null;
-      const nombre=person?person.n.replace(/\s+/g,'_'):'boleta';
-      const a=document.createElement('a');
-      a.href=canvas.toDataURL('image/png');
-      a.download=`boleta_${nombre}_${(w?.dateRange||'').replace(/\s+/g,'_')}.png`;
-      a.click();
-      break;
-    }
   }
 }
 
